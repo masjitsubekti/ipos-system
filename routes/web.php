@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -14,8 +15,14 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/dashboard', [HomeController::class, 'index']);
+Route::get('/', [AuthController::class, 'showFormLogin'])->name('login');
+Route::post('auth/login', [AuthController::class, 'login']);
+Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');
+ 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('home', [HomeController::class, 'index'])->name('home');
+});
