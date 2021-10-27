@@ -63,25 +63,18 @@ class JenisBarangController extends Controller
 
           $validator = Validator::make($input, $rules, $messages);
           if($validator->fails()){
-              $response['success'] = false;
-              $response['message'] = "Harap lengkapi isian dengan benar";
-              return response()->json($response);
+              return redirect()->back()->withErrors($validator)->withInput($request->all);
           }
-          
-          // Handle Save
+
           $data = new JenisBarang();
           $data->kode = $request->kode;
           $data->nama = $request->nama;
           $data->status = '1';
           $data->save();
-          
-          $response['success'] = true;
-          $response['message'] = "Data berhasil disimpan";
-          return response()->json($response);
+
+          return redirect()->back()->with('success', 'Jenis barang berhasil disimpan');
       } catch (Exception $e) {
-          $response['success'] = false;
-          $response['message'] = "Data gagal disimpan";
-          return response()->json($response);
+          return redirect()->back()->with('error', 'Jenis barang gagal disimpan');
       }
     }
 
@@ -103,34 +96,28 @@ class JenisBarangController extends Controller
 
           $validator = Validator::make($input, $rules, $messages);
           if($validator->fails()){
-              $response['success'] = false;
-              $response['message'] = "Harap lengkapi isian dengan benar";
-              return response()->json($response);
+              return redirect()->back()->withErrors($validator)->withInput($request->all);
           }
 
+          // $data = JenisBarang::whereId($request->id)->firstOrFail();
           $id = $request->id;
           $data = JenisBarang::find($id)
+          
           // JenisBarang::where('id', $id)
           ->update([
             'kode' => $request->kode,
             'nama' => $request->nama
           ]); 
 
-          $response['success'] = true;
-          $response['message'] = "Data berhasil diubah";
-          return response()->json($response);
+          return redirect()->back()->with('success', 'Jenis barang berhasil diupdate');
       } catch (Exception $e) {
-          $response['success'] = false;
-          $response['message'] = "Data gagal disimpan";
-          return response()->json($response);
+          return redirect()->back()->with('error', 'Jenis barang gagal diupdate');
       }
     }
 
     public function delete($id)
     { 
-        JenisBarang::where("id", $id)->delete();
-        $response['success'] = true;
-        $response['message'] = "Data berhasil dihapus";
-        return response()->json($response);
+      JenisBarang::where("id", $id)->delete();
+      return redirect()->back()->with('success', 'Jenis barang berhasil dihapus');
     }
 }

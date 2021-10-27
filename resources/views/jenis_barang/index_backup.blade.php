@@ -1,25 +1,5 @@
 @extends('layouts.main')
 @section('content')
-    {{-- <div class="card flat">
-  <div class="card-header">
-    <span class="card-title">Tambah Jenis Barang</span>
-  </div>
-  <div class="card-body">
-    @include('layouts.notif')
-    <a href="javascript:;" id="btn-tambah" class="btn btn-success">Tambah</a>
-    <form action="{{ url('jenis-barang/update') }}" method="POST" id="form-jenis">
-      @csrf
-      <input type="text" name="id" value="1">
-      <div class="form-group">
-        <label for="exampleInputUsername1">Nama</label>
-        <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama . . .">
-      </div>
-      <button type="submit" class="btn btn-primary mr-2">Simpan</button>
-      <button class="btn btn-secondary">Batal</button>
-    </form>
-  </div>
-</div> --}}
-
     <div class="row">
         <div class="col-12">
             <div class="card flat">

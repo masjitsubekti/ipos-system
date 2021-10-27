@@ -39,35 +39,6 @@
   </div>
 </div>
 
-<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="formModalLabel">Tambah Jenis Barang</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form id="formData" action="" method="POST">
-        <div class="modal-body">
-          <input type="hidden" class="form-control" id="id" name="id"></input>
-          <div class="form-group">
-            <label for="kategori">Kode</label>
-            <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode . . ." required></input>
-          </div>
-          <div class="form-group">
-            <label for="kategori">Nama Jenis Barang</label>
-            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Jenis Barang . . ." required></input>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 <!-- DATA SORT -->
 <input type="hidden" name="hidden_id_th" id="hidden_id_th" value="#column_created">
 <input type="hidden" name="hidden_page" id="hidden_page" value="1">
@@ -76,68 +47,5 @@
 <div id="div_modal"></div>
 @endsection
 @section('js')
-<script>
-  $(document).ready(function() {
-    fetch_data(1)
-  })
-
-  $('#cari').on('keypress', function(e) {
-    if (e.which == 13) {
-      fetch_data(1);
-    }
-  });
-
-  $('#btn-tambah').on('click', function() {
-    $("#formModal").modal('show');
-  })
-
-  $(document).on('click', '.pagination a', function(event) {
-    event.preventDefault();
-    var page = $(this).attr('href').split('page=')[1];
-    $('#hidden_page').val(page);
-    fetch_data(page);
-  });
-
-  function fetch_data(page) {
-    var cari = $('#cari').val();
-    var limit = $('#limit').val();
-    var id_th = $('#hidden_id_th').val();
-    var column_name = $('#hidden_column_name').val();
-    var sort_type = $('#hidden_sort_type').val();
-    $.ajax({
-      url: "{{ url('jenis-barang/fetch_data') }}",
-      type: 'GET',
-      dataType: 'html',
-      data: {
-        page : page,
-        sortby : column_name,
-        sorttype : sort_type,
-        limit : limit,
-        q : cari,
-      },
-      beforeSend: function() {},
-      success: function(result) {
-          $('#list').html(result);
-          sort_finish(id_th,sort_type);
-      }
-    });
-  }
-
-  function sort_table(id, column){
-    var sort = $(id).attr("data-sort");
-    $('#hidden_id_th').val(id);
-    $('#hidden_column_name').val(column);
-    
-    if(sort=="asc"){
-        sort = 'desc';
-    }else if(sort=="desc"){
-        sort = 'asc';
-    }else{
-        sort = 'asc';
-    }
-    $('#hidden_sort_type').val(sort);
-    $('#hidden_page').val(1);
-    fetch_data(1);
-  }
-</script>
+<script src="{{ asset('assets/js/pages/jenis-barang.js') }}"></script>
 @endsection

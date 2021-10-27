@@ -36,8 +36,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => '/jenis-barang'], function() {
       Route::post('/save', [JenisBarangController::class, 'save'])->name('jenis-barang.save');
       Route::post('/update', [JenisBarangController::class, 'update'])->name('jenis-barang.update');
+      Route::get('/load-modal', [JenisBarangController::class, 'load_modal']);
       Route::get('/delete/{id}', [JenisBarangController::class, 'delete'])->name('jenis-barang.delete');
-      Route::get('/fetch_data', [JenisBarangController::class, 'fetch_data']);
+      Route::get('/fetch-data', [JenisBarangController::class, 'fetch_data']);
     });
 
     Route::resource('satuan', SatuanController::class);

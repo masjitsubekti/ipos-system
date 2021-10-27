@@ -11,6 +11,7 @@ class JenisBarang extends Model
     protected $table = "jenis_barang";
     protected $primaryKey = 'id';
     protected $fillable = [
+      'kode',
       'nama',
       'status',
     ];

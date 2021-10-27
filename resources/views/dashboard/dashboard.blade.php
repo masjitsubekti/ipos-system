@@ -1,4 +1,4 @@
 @extends('layouts.main')
 @section('content')
-    hallo bro {{ Auth::user()->name }}
+    hallo {{ Auth::user()->name }}
 @endsection
