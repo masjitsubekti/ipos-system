@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +29,13 @@ Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'auth'], function () {
     // dashboard
     Route::get('home', [HomeController::class, 'index'])->name('home');
-    // Master Jenis Barang
+    // All Route Master Data
     Route::group(['prefix' => '/master'], function() {
       Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
-    });
-    
+      Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
+      Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
+    }); 
+    // Master Jenis Barang
     Route::group(['prefix' => '/jenis-barang'], function() {
       Route::post('/save', [JenisBarangController::class, 'save'])->name('jenis-barang.save');
       Route::post('/update', [JenisBarangController::class, 'update'])->name('jenis-barang.update');
@@ -40,6 +43,20 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/delete/{id}', [JenisBarangController::class, 'delete'])->name('jenis-barang.delete');
       Route::get('/fetch-data', [JenisBarangController::class, 'fetch_data']);
     });
-
-    Route::resource('satuan', SatuanController::class);
+    // Master Satuan
+    Route::group(['prefix' => '/satuan'], function() {
+      Route::post('/save', [SatuanController::class, 'save'])->name('satuan.save');
+      Route::post('/update', [SatuanController::class, 'update'])->name('satuan.update');
+      Route::get('/load-modal', [SatuanController::class, 'load_modal']);
+      Route::get('/delete/{id}', [SatuanController::class, 'delete'])->name('satuan.delete');
+      Route::get('/fetch-data', [SatuanController::class, 'fetch_data']);
+    });
+    // Master Supplier
+    Route::group(['prefix' => '/supplier'], function() {
+      Route::post('/save', [SupplierController::class, 'save'])->name('supplier.save');
+      Route::post('/update', [SupplierController::class, 'update'])->name('supplier.update');
+      Route::get('/load-modal', [SupplierController::class, 'load_modal']);
+      Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
+      Route::get('/fetch-data', [SupplierController::class, 'fetch_data']);
+    });
 });

@@ -24,7 +24,7 @@ class JenisBarangController extends Controller
         $q = $request->get('q');
         $q = str_replace(" ", "%", $q);
 
-        $data = DB::table('jenis_barang')
+        $data = DB::table('m_jenis_barang')
                     ->where('nama', 'like', '%'.$q.'%')
                     ->orderBy($sortBy, $sortType)
                     ->paginate($limit);

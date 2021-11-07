@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use App\Models\Satuan;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SatuanController extends Controller
+class SupplierController extends Controller
 {
     public function index(Request $request)
     {   
         $data = [];
         $q = $request->get('q');
-        return view('satuan.index', compact('data', 'q'));
+        return view('supplier.index', compact('data', 'q'));
     }
 
     public function fetch_data(Request $request)
@@ -24,13 +24,13 @@ class SatuanController extends Controller
         $q = $request->get('q');
         $q = str_replace(" ", "%", $q);
 
-        $data = DB::table('m_satuan')
+        $data = DB::table('m_supplier')
                     ->where('nama', 'like', '%'.$q.'%')
                     ->orderBy($sortBy, $sortType)
                     ->paginate($limit);
                     
         $data->appends($request->all());
-        return view('satuan.list_data', compact('data'));
+        return view('supplier.list_data', compact('data'));
     }
 
     public function load_modal(Request $request)
@@ -38,24 +38,27 @@ class SatuanController extends Controller
       $id = $request->id;
       if ($id != "") {
         $data['mode'] = "UPDATE";
-        $data['data'] = Satuan::find($id);	
+        $data['data'] = Supplier::find($id);	
       } else {
         $data['mode'] = "ADD";
       }
-      return view('satuan.form_modal', $data);
+      return view('supplier.form_modal', $data);
     }
 
     public function save(Request $request)
     {
       try {
           $input = [
+            'kode' => $request->input('kode'),
             'nama' => $request->input('nama'),
           ];
           $rules = [
+            'kode' => 'required',
             'nama' => 'required',
           ];
           $messages = [
-            'nama.required' => 'Satuan wajib diisi',
+            'kode.required' => 'Kode wajib diisi',
+            'nama.required' => 'Nama wajib diisi',
           ];
 
           $validator = Validator::make($input, $rules, $messages);
@@ -66,8 +69,12 @@ class SatuanController extends Controller
           }
           
           // Handle Save
-          $data = new Satuan();
+          $data = new Supplier();
+          $data->kode = $request->kode;
           $data->nama = $request->nama;
+          $data->no_telp = $request->no_telp;
+          $data->alamat = $request->alamat;
+          $data->keterangan = $request->keterangan;
           $data->status = '1';
           $data->save();
           
@@ -85,13 +92,16 @@ class SatuanController extends Controller
     {
       try {
           $input = [
+            'kode' => $request->input('kode'),
             'nama' => $request->input('nama'),
           ];
           $rules = [
+            'kode' => 'required',
             'nama' => 'required',
           ];
           $messages = [
-            'nama.required' => 'Satuan wajib diisi',
+            'kode.required' => 'Kode wajib diisi',
+            'nama.required' => 'Nama wajib diisi',
           ];
 
           $validator = Validator::make($input, $rules, $messages);
@@ -102,9 +112,13 @@ class SatuanController extends Controller
           }
 
           $id = $request->id;
-          $data = Satuan::find($id)
+          $data = Supplier::find($id)
           ->update([
-            'nama' => $request->nama
+            'kode' => $request->kode,
+            'nama' => $request->nama,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+            'keterangan' => $request->keterangan,
           ]); 
 
           $response['success'] = true;
@@ -119,7 +133,7 @@ class SatuanController extends Controller
 
     public function delete($id)
     { 
-        Satuan::where("id", $id)->delete();
+        Supplier::where("id", $id)->delete();
         $response['success'] = true;
         $response['message'] = "Data berhasil dihapus";
         return response()->json($response);
