@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
       Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
       Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
+      Route::get('barang', [BarangController::class, 'index'])->name('barang');
     }); 
     // Master Jenis Barang
     Route::group(['prefix' => '/jenis-barang'], function() {
@@ -58,5 +60,14 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/load-modal', [SupplierController::class, 'load_modal']);
       Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
       Route::get('/fetch-data', [SupplierController::class, 'fetch_data']);
+    });
+    // Master Barang
+    Route::group(['prefix' => '/barang'], function() {
+      Route::post('/save', [BarangController::class, 'save'])->name('barang.save');
+      Route::post('/update', [BarangController::class, 'update'])->name('barang.update');
+      Route::get('/create', [BarangController::class, 'create']);
+      Route::get('/edit/{id}', [BarangController::class, 'edit']);
+      Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('barang.delete');
+      Route::get('/fetch-data', [BarangController::class, 'fetch_data']);
     });
 });
